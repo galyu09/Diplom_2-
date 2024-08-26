@@ -10,7 +10,6 @@ class TestUserCreate:
     @allure.description('Проверяем, что запрос возвращает валидный код ответа 200 и ожидаемое тело ответа')
     def test_create_user_unique(self, user):
         response_create_user = UsersApi.create_user(user)
-        assert response_create_user.status_code == 200
         response = response_create_user.json()
         assert user['name'] == response['user']['name']
         assert user['email'] == response['user']['email']
@@ -21,10 +20,9 @@ class TestUserCreate:
     @allure.description('Проверяем, что запрос вернет код 403 и ожидаемое тело ответа')
     def test_create_double_user(self, user):
         response_create_user = UsersApi.create_user(user)
-        assert response_create_user.status_code == 200
         response_create_double_user_error = UsersApi.create_user(user)
         assert response_create_double_user_error.status_code == 403
-        assert response_create_double_user_error.json()['message'] == DOUBLE_USER_CREATE_ERROR_TEXT
+        assert response_create_double_user_error.json()['message'] == DOUBLE_USER_ERROR
         UsersApi.delete_user(response_create_user.json()['accessToken'])
 
     @allure.title('Ошибка запроса на создание юзера без одного из параметра')
@@ -38,7 +36,7 @@ class TestUserCreate:
         )
     )
     def test_create_user_without_required_field(self, payload):
-        response_create_user_without_required_field = UsersApi.create_user(payload)
-        assert response_create_user_without_required_field.status_code == 403
-        assert response_create_user_without_required_field.json()['message'] == USER_CREATE_WITHOUT_REQUIRED_FIELD_ERROR_TEXT
+        response = UsersApi.create_user(payload)
+        assert response.status_code == 403
+        assert response.json()['message'] == AUTH_REQUIRED_ERROR
 

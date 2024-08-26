@@ -38,9 +38,9 @@ ORDER_DATA_INVALID = {
     "ingredients": ["i'm bun", "i'm meat", "i'm sauce"]
 }
 
-DOUBLE_USER_CREATE_ERROR_TEXT = 'User already exists'
-USER_CREATE_WITHOUT_REQUIRED_FIELD_ERROR_TEXT = 'Email, password and name are required fields'
-USER_LOGIN_WRONG_DATA_ERROR_TEXT = 'email or password are incorrect'
-ORDER_EMPTY_DATA_ERROR_TEXT = 'Ingredient ids must be provided'
+DOUBLE_USER_ERROR = 'User already exists'
+AUTH_REQUIRED_ERROR = 'Email, password and name are required fields'
+USER_LOGIN_ERROR = 'email or password are incorrect'
+ORDER_ERROR_TEXT = 'Ingredient ids must be provided'
 AUTH_ERROR_TEXT = 'You should be authorised'
 

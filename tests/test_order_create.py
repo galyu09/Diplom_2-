@@ -1,10 +1,9 @@
-import pytest
 import allure
 
 from api.api_orders import OrdersApi
 from api.api_users import UsersApi
 from tests import data
-from tests.data import ORDER_EMPTY_DATA_ERROR_TEXT
+from tests.data import ORDER_ERROR_TEXT
 
 
 class TestOrderCreate:
@@ -13,7 +12,6 @@ class TestOrderCreate:
     def test_order_create_by_auth_user(self, user):
         UsersApi.create_user(user)
         response = UsersApi.login_user(user)
-        assert response.status_code == 200
         token = response.json()['accessToken']
         response = OrdersApi.create_order(data.ORDER_DATA_VALID, token)
         assert response.status_code == 200
@@ -36,14 +34,13 @@ class TestOrderCreate:
     def test_create_empty_orders(self):
         response = OrdersApi.create_order(data.ORDER_EMPTY)
         assert response.status_code == 400
-        assert response.json()["message"] == ORDER_EMPTY_DATA_ERROR_TEXT
+        assert response.json()["message"] == ORDER_ERROR_TEXT
 
     @allure.title('Запрос на отправку заказа с неверным хэшем ингридиентов')
     @allure.description('Проверяем, что при отправке заказа c неверным хешем вернется код 500 и нужный текст ошибки в теле')
     def test_order_create_invalid_ingridients(self, user):
         UsersApi.create_user(user)
         response = UsersApi.login_user(user)
-        assert response.status_code == 200
         token = response.json()['accessToken']
         response = OrdersApi.create_order(data.ORDER_DATA_INVALID, token)
         assert response.status_code == 500

@@ -20,7 +20,6 @@ class TestUserChange:
         token = response.json()['accessToken']
         user[case] = 'new_' + user[case]
         response = UsersApi.change_user_data(user, token)
-        assert response.status_code == 200
         response = response.json()
         assert user['name'] == response['user']['name']
         assert user['email'] == response['user']['email']

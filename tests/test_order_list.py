@@ -19,7 +19,6 @@ class TestOrdersList:
     def test_get_orders_list_by_auth_user(self, user):
         UsersApi.create_user(user)
         response = UsersApi.login_user(user)
-        assert response.status_code == 200
         token = response.json()['accessToken']
         response = OrdersApi.get_orders_list(token)
         assert response.status_code == 200

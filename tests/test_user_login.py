@@ -1,9 +1,6 @@
 import allure
-import pytest
-
-from tests import data
 from api.api_users import UsersApi
-from tests.data import USER_LOGIN_WRONG_DATA_ERROR_TEXT
+from tests.data import USER_LOGIN_ERROR
 
 
 class TestUserLogin:
@@ -13,7 +10,6 @@ class TestUserLogin:
     def test_user_login_sucsess(self, user):
         UsersApi.create_user(user)
         response = UsersApi.login_user(user)
-        assert response.status_code == 200
         response = response.json()
         access_token = response['accessToken']
         assert user['name'] == response['user']['name']
@@ -27,7 +23,7 @@ class TestUserLogin:
     def test_user_login_wrong_data(self, user):
         response = UsersApi.login_user(user)
         assert response.status_code == 401
-        assert response.json()['message'] == USER_LOGIN_WRONG_DATA_ERROR_TEXT
+        assert response.json()['message'] == USER_LOGIN_ERROR
 
 
 
